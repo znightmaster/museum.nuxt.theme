@@ -1,0 +1,450 @@
+<template>
+  <div class="blueprint-map">
+    <!-- Переключатель этажей -->
+    <div class="floor-switch">
+      <button
+        v-for="floor in floors"
+        :key="floor"
+        class="floor-switch__btn"
+        :class="{ 'is-active': activeFloor === floor }"
+        type="button"
+        @click="activeFloor = floor"
+      >
+        {{ floor }} этаж
+      </button>
+    </div>
+
+    <!-- Blueprint-план здания. Пропорции 60 x 15 м -> viewBox 800 x 200 -->
+    <div class="blueprint-map__stage">
+      <svg
+        class="blueprint-map__svg"
+        viewBox="0 0 800 200"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label="Схематичный план здания музея"
+      >
+        <!-- фон прозрачный, только линии -->
+        <rect
+          :x="building.x"
+          :y="building.y"
+          :width="building.w"
+          :height="building.h"
+          class="bp-outline"
+        />
+
+        <!-- разрыв в стене + подпись "вход" в начале здания -->
+        <line
+          :x1="building.x"
+          :y1="building.y + building.h / 2 - 12"
+          :x2="building.x"
+          :y2="building.y + building.h / 2 + 12"
+          class="bp-entrance-gap"
+        />
+        <path
+          :d="`M ${building.x - 14} ${building.y + building.h / 2} L ${building.x + 10} ${building.y + building.h / 2}`"
+          class="bp-entrance-arrow"
+          marker-end="url(#arrow)"
+        />
+        <text
+          :x="building.x - 6"
+          :y="building.y + building.h / 2 - 18"
+          class="bp-label"
+          text-anchor="middle"
+        >
+          вход
+        </text>
+
+        <!-- лестницы: в середине и в конце здания -->
+        <g
+          v-for="stair in stairs"
+          :key="stair.id"
+          :transform="`translate(${stair.cx}, ${stair.cy})`"
+        >
+          <rect x="-14" y="-22" width="28" height="44" class="bp-stair" />
+          <line
+            v-for="i in 6"
+            :key="i"
+            :x1="-14"
+            :x2="14"
+            :y1="-22 + i * 6"
+            :y2="-22 + i * 6"
+            class="bp-stair-step"
+          />
+          <text :y="34" class="bp-label" text-anchor="middle">лестница</text>
+        </g>
+
+        <defs>
+          <marker
+            id="arrow"
+            markerWidth="8"
+            markerHeight="8"
+            refX="6"
+            refY="4"
+            orient="auto"
+          >
+            <path d="M0,0 L8,4 L0,8 Z" class="bp-arrowhead" />
+          </marker>
+        </defs>
+      </svg>
+
+      <!-- Метки поверх SVG, позиционируются в % от внутренней площади здания -->
+      <div class="blueprint-map__markers">
+        <button
+          v-for="item in visibleMarkers"
+          :key="item.id"
+          class="marker"
+          :class="`marker--${item.type}`"
+          :style="{ left: item.x + '%', top: item.y + '%' }"
+          :title="item.type === 'car' ? item.title : undefined"
+          type="button"
+          @click="item.type === 'exhibit' ? openExhibit(item) : null"
+        >
+          <span class="marker__dot" />
+        </button>
+      </div>
+    </div>
+
+    <div class="blueprint-map__legend">
+      <span><i class="marker__dot marker__dot--car" /> площадка с техникой</span>
+      <span><i class="marker__dot marker__dot--exhibit" /> стенд быта — открывает галерею</span>
+    </div>
+
+    <!-- Модалка-галерея -->
+    <Teleport to="body">
+      <div v-if="selected" class="gallery-overlay" @click.self="closeExhibit">
+        <div class="gallery-modal">
+          <div class="gallery-modal__header">
+            <div>
+              <p class="gallery-modal__title">{{ selected.title }}</p>
+              <p v-if="selected.subtitle" class="gallery-modal__subtitle">
+                {{ selected.subtitle }}
+              </p>
+            </div>
+            <button class="gallery-modal__close" type="button" @click="closeExhibit">
+              ×
+            </button>
+          </div>
+
+          <div class="gallery-modal__viewer">
+            <button
+              v-if="selected.photos.length > 1"
+              class="gallery-modal__nav gallery-modal__nav--prev"
+              type="button"
+              @click="prevPhoto"
+            >
+              ‹
+            </button>
+            <img
+              :src="selected.photos[activePhoto]"
+              :alt="selected.title"
+              class="gallery-modal__image"
+            />
+            <button
+              v-if="selected.photos.length > 1"
+              class="gallery-modal__nav gallery-modal__nav--next"
+              type="button"
+              @click="nextPhoto"
+            >
+              ›
+            </button>
+          </div>
+
+          <div v-if="selected.photos.length > 1" class="gallery-modal__thumbs">
+            <button
+              v-for="(photo, i) in selected.photos"
+              :key="i"
+              class="gallery-modal__thumb"
+              :class="{ 'is-active': i === activePhoto }"
+              type="button"
+              @click="activePhoto = i"
+            >
+              <img :src="photo" :alt="`${selected.title} ${i + 1}`" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue'
+
+// --- пропсы ---------------------------------------------------------------
+// items: единый список меток на всех этажах.
+// type: 'car' (площадка с техникой, просто подпись) | 'exhibit' (стенд, открывает галерею)
+// x, y: положение в % от внутренней площади плана (0-100)
+const props = defineProps({
+  items: {
+    type: Array,
+    default: () => [],
+  },
+  floors: {
+    type: Array,
+    default: () => [1, 2, 3],
+  },
+})
+
+// --- геометрия здания: 60 x 15 м -> viewBox 800 x 200 ---------------------
+const building = { x: 60, y: 20, w: 680, h: 160 }
+
+// лестницы: в середине и ближе к концу здания
+const stairs = [
+  { id: 'mid', cx: building.x + building.w * 0.5, cy: building.y + building.h / 2 },
+  { id: 'end', cx: building.x + building.w * 0.88, cy: building.y + building.h / 2 },
+]
+
+// --- состояние --------------------------------------------------------------
+const activeFloor = ref(props.floors[0])
+const selected = ref(null)
+const activePhoto = ref(0)
+
+const visibleMarkers = computed(() =>
+  props.items.filter((item) => item.floor === activeFloor.value)
+)
+
+function openExhibit(item) {
+  selected.value = item
+  activePhoto.value = 0
+}
+function closeExhibit() {
+  selected.value = null
+}
+function nextPhoto() {
+  if (!selected.value) return
+  activePhoto.value = (activePhoto.value + 1) % selected.value.photos.length
+}
+function prevPhoto() {
+  if (!selected.value) return
+  const len = selected.value.photos.length
+  activePhoto.value = (activePhoto.value - 1 + len) % len
+}
+</script>
+
+<style scoped>
+/*
+  Компонент не задаёт фон и почти не задаёт цвета —
+  подставьте свои CSS-переменные вместо --bp-* ниже,
+  чтобы карта подхватила стилистику сайта.
+*/
+.blueprint-map {
+  --bp-line: var(--color-border, currentColor);
+  --bp-line-strong: var(--color-text, currentColor);
+  --bp-accent-car: var(--color-muted, #8a8a8a);
+  --bp-accent-exhibit: var(--color-accent, #b5772e);
+  background: transparent;
+}
+
+.floor-switch {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.floor-switch__btn {
+  padding: 6px 16px;
+  border: 1px solid var(--bp-line);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.floor-switch__btn.is-active {
+  border-color: var(--bp-line-strong);
+  font-weight: 600;
+}
+
+.blueprint-map__stage {
+  position: relative;
+  width: 100%;
+}
+.blueprint-map__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bp-outline {
+  fill: none;
+  stroke: var(--bp-line-strong);
+  stroke-width: 2;
+}
+.bp-entrance-gap {
+  stroke: transparent; /* визуальный разрыв стены, фон прозрачный по умолчанию */
+  stroke-width: 4;
+}
+.bp-entrance-arrow,
+.bp-arrowhead {
+  stroke: var(--bp-line-strong);
+  fill: var(--bp-line-strong);
+  stroke-width: 1.5;
+}
+.bp-stair {
+  fill: none;
+  stroke: var(--bp-line);
+  stroke-width: 1.5;
+}
+.bp-stair-step {
+  stroke: var(--bp-line);
+  stroke-width: 1;
+}
+.bp-label {
+  font-size: 9px;
+  fill: var(--bp-line);
+  font-family: inherit;
+}
+
+.blueprint-map__markers {
+  position: absolute;
+  inset: 0;
+}
+.marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.marker--car {
+  cursor: default;
+}
+.marker__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--bp-accent-car);
+  background: transparent;
+  display: block;
+}
+.marker--exhibit .marker__dot {
+  border-color: var(--bp-accent-exhibit);
+  background: var(--bp-accent-exhibit);
+}
+.marker--exhibit:hover .marker__dot {
+  outline: 3px solid var(--bp-accent-exhibit);
+  outline-offset: 2px;
+}
+
+.blueprint-map__legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--bp-line);
+  align-items: center;
+}
+.blueprint-map__legend .marker__dot {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+  width: 10px;
+  height: 10px;
+}
+.blueprint-map__legend .marker__dot--car {
+  border: 2px solid var(--bp-accent-car);
+}
+.blueprint-map__legend .marker__dot--exhibit {
+  border: 2px solid var(--bp-accent-exhibit);
+  background: var(--bp-accent-exhibit);
+}
+
+/* --- галерея --- */
+.gallery-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.gallery-modal {
+  background: var(--color-surface, #fff);
+  color: var(--color-text, #111);
+  max-width: 640px;
+  width: 100%;
+  padding: 20px;
+}
+.gallery-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.gallery-modal__title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+.gallery-modal__subtitle {
+  font-size: 13px;
+  color: var(--color-muted, #777);
+  margin: 4px 0 0;
+}
+.gallery-modal__close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: inherit;
+}
+.gallery-modal__viewer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-alt, #f3f3f3);
+  min-height: 280px;
+}
+.gallery-modal__image {
+  max-width: 100%;
+  max-height: 420px;
+  display: block;
+}
+.gallery-modal__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  border: none;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.gallery-modal__nav--prev {
+  left: 8px;
+}
+.gallery-modal__nav--next {
+  right: 8px;
+}
+.gallery-modal__thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  overflow-x: auto;
+}
+.gallery-modal__thumb {
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.gallery-modal__thumb.is-active {
+  border-color: var(--bp-accent-exhibit, #b5772e);
+}
+.gallery-modal__thumb img {
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
+  display: block;
+}
+</style>
