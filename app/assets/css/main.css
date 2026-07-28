@@ -38,6 +38,12 @@
 
   /* контур чертежей (.gaz69, .bm13) — светло-серый на тёмном фоне */
   --color-outline: 216 216 216; /* #d8d8d8 */
+
+  --map-img-filter: contrast(1.05) saturate(1.08) brightness(1.02);
+  --map-thumb-filter: saturate(0.95) brightness(0.92);
+  --map-thumb-filter-active: saturate(1.1) brightness(1.05);--map-img-filter: contrast(1.05) saturate(1.08) brightness(1.02);
+  --map-thumb-filter: saturate(0.95) brightness(0.92);
+  --map-thumb-filter-active: saturate(1.1) brightness(1.05);
 }
 
 :root[data-theme="light"] {
@@ -68,6 +74,10 @@
 
   /* контур чертежей (.gaz69, .bm13) — тёмный на светлой "бумаге" */
   --color-outline: 42 38 30; /* #2a261e */
+
+  --map-img-filter: contrast(1.02) saturate(1.15) brightness(1.12);
+  --map-thumb-filter: saturate(1.05) brightness(1.05);
+  --map-thumb-filter-active: saturate(1.15) brightness(1.1);
 }
 
 html {
