@@ -1,52 +1,50 @@
 import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};import { tmpdir } from 'node:os';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, createError, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, setCookie, deleteCookie, getCookie, readMultipartFormData, getResponseStatusText } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/h3/dist/index.mjs';
 import { Server } from 'node:http';
-import { resolve, join, dirname, extname } from 'node:path';
-import crypto$1, { timingSafeEqual, createHmac, randomUUID } from 'node:crypto';
+import { resolve, dirname, join, extname } from 'node:path';
+import nodeCrypto, { timingSafeEqual, createHmac, randomUUID } from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { escapeHtml } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/@vue/shared/dist/shared.cjs.js';
-import viteNodeEntry_mjs from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/@nuxt/vite-builder/dist/vite-node-entry.mjs';
-import { viteNodeFetch } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/@nuxt/vite-builder/dist/vite-node.mjs';
-import { createClient } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/@supabase/supabase-js/dist/index.mjs';
-import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, encodePath, joinRelativeURL } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/ufo/dist/index.mjs';
-import destr, { destr as destr$1 } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/destr/dist/index.mjs';
-import { createHooks } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/nitropack/node_modules/hookable/dist/index.mjs';
-import { createFetch, Headers as Headers$1 } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/ofetch/dist/node.mjs';
-import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/node-mock-http/dist/index.mjs';
-import { createStorage, defineDriver, prefixStorage } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/unstorage/dist/index.mjs';
-import unstorage_47drivers_47fs from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/unstorage/drivers/fs.mjs';
-import { mkdir, writeFile, rename, unlink, readFile } from 'node:fs/promises';
-import fsDriver from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/unstorage/drivers/fs-lite.mjs';
-import lruCache from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/unstorage/drivers/lru-cache.mjs';
-import { digest, hash as hash$1 } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/ohash/dist/index.mjs';
-import { klona } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/klona/dist/index.mjs';
-import defu, { defuFn } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/defu/dist/defu.mjs';
-import { snakeCase } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/scule/dist/index.mjs';
-import { getContext } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/unctx/dist/index.mjs';
-import { toRouteMatcher, createRouter } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/radix3/dist/index.mjs';
-import consola, { consola as consola$1 } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/consola/dist/index.mjs';
-import { ErrorParser } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/youch-core/build/index.js';
-import { Youch } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/youch/build/index.js';
-import { SourceMapConsumer } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/source-map/source-map.js';
-import { defineDiagnostics, createConsoleReporter } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/nostics/dist/index.mjs';
-import { ansiFormatter } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/nostics/dist/formatters/ansi.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, createError, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, setCookie, deleteCookie, getCookie, readMultipartFormData, getResponseStatusText } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/h3/dist/index.mjs';
+import { escapeHtml } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/@vue/shared/dist/shared.cjs.js';
+import viteNodeEntry_mjs from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/@nuxt/vite-builder/dist/vite-node-entry.mjs';
+import { viteNodeFetch } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/@nuxt/vite-builder/dist/vite-node.mjs';
+import { createClient } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/@supabase/supabase-js/dist/index.mjs';
+import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, encodePath, joinRelativeURL } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/ufo/dist/index.mjs';
+import { createHead as createHead$1, propsToString, renderSSRHead } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/unhead/dist/server.mjs';
+import { isVNode, isRef, toValue } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/vue/index.mjs';
+import { DeprecationsPlugin } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/unhead/dist/legacy.mjs';
+import { PromisesPlugin, TemplateParamsPlugin, AliasSortingPlugin } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/unhead/dist/plugins.mjs';
+import { klona } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/klona/dist/index.mjs';
+import defu, { defuFn } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/defu/dist/defu.mjs';
+import destr, { destr as destr$1 } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/destr/dist/index.mjs';
+import { snakeCase } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/scule/dist/index.mjs';
+import { defineDiagnostics, createConsoleReporter } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/nostics/dist/index.mjs';
+import { ansiFormatter } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/nostics/dist/formatters/ansi.mjs';
+import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/vue-bundle-renderer/dist/runtime.mjs';
+import { renderToString } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/vue/server-renderer/index.mjs';
+import { stringify, uneval } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/devalue/index.js';
+import { createHooks } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/nitropack/node_modules/hookable/dist/index.mjs';
+import { createFetch, Headers as Headers$1 } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/ofetch/dist/node.mjs';
+import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/node-mock-http/dist/index.mjs';
+import { createStorage, prefixStorage } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/unstorage/dist/index.mjs';
+import unstorage_47drivers_47fs from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/unstorage/drivers/fs.mjs';
+import file_58_47_47_47C_58_47Users_47rammsstein_47Desktop_47museum_3720nuxt_3720theme_47museum_46nuxt_46theme_47node_modules_47_64nuxt_47nitro_45server_47dist_47runtime_47utils_47cache_45driver_46mjs from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/@nuxt/nitro-server/dist/runtime/utils/cache-driver.mjs';
+import { digest, hash as hash$1 } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/ohash/dist/index.mjs';
+import { toRouteMatcher, createRouter } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/radix3/dist/index.mjs';
+import { readFile } from 'node:fs/promises';
+import consola, { consola as consola$1 } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/consola/dist/index.mjs';
+import { ErrorParser } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/youch-core/build/index.js';
+import { Youch } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/youch/build/index.js';
+import { SourceMapConsumer } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/source-map/source-map.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { stringify, uneval } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/devalue/index.js';
-import { getContext as getContext$1 } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/@nuxt/nitro-server/node_modules/unctx/dist/index.mjs';
-import { captureRawStackTrace, parseRawStackTrace } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/errx/dist/index.js';
-import { isVNode, isRef, toValue } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/vue/index.mjs';
-import _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/@nuxt/vite-builder/dist/fix-stacktrace.mjs';
+import { getContext } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/@nuxt/nitro-server/node_modules/unctx/dist/index.mjs';
+import { captureRawStackTrace, parseRawStackTrace } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/errx/dist/index.js';
+import _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/@nuxt/vite-builder/dist/fix-stacktrace.mjs';
 import { promises } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname as dirname$1, resolve as resolve$1 } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/pathe/dist/index.mjs';
-import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/vue-bundle-renderer/dist/runtime.mjs';
-import { renderToString } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/vue/server-renderer/index.mjs';
-import { createHead as createHead$1, propsToString, renderSSRHead } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/unhead/dist/server.mjs';
-import { walkResolver } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/unhead/dist/utils.mjs';
-import { DeprecationsPlugin } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/unhead/dist/legacy.mjs';
-import { PromisesPlugin, TemplateParamsPlugin, AliasSortingPlugin } from 'file:///Users/nikolay/Documents/museum%20nuxt%20theme/node_modules/unhead/dist/plugins.mjs';
+import { dirname as dirname$1, resolve as resolve$1 } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/pathe/dist/index.mjs';
+import { walkResolver } from 'file://C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/unhead/dist/utils.mjs';
 
-const serverAssets = [{"baseName":"server","dir":"/Users/nikolay/Documents/museum nuxt theme/server/assets"}];
+const serverAssets = [{"baseName":"server","dir":"C:/Users/rammsstein/Desktop/museum nuxt theme/museum.nuxt.theme/server/assets"}];
 
 const assets$1 = createStorage();
 
@@ -54,65 +52,16 @@ for (const asset of serverAssets) {
   assets$1.mount(asset.baseName, unstorage_47drivers_47fs({ base: asset.dir, ignore: (asset?.ignore || []) }));
 }
 
-//#region src/runtime/utils/cache-driver.mjs
-/**
-* @param {string} item
-*/
-function normalizeFsKey(item) {
-	return `${item.replace(/[^\w.-]/g, "_").slice(0, 20)}-${crypto$1.createHash("sha256").update(item).digest("hex")}`;
-}
-/**
-* Write `value` to `path` atomically so a concurrent reader never observes a
-* truncated file: the payload is written to a unique sibling and renamed over
-* the destination, which is a single filesystem operation.
-* @param {string} path
-* @param {string} value
-*/
-async function atomicWrite(path, value) {
-	await mkdir(dirname(path), { recursive: true });
-	const tmp = `${path}.${crypto$1.randomBytes(8).toString("hex")}.tmp`;
-	try {
-		await writeFile(tmp, value, "utf8");
-		await rename(tmp, path);
-	} catch (error) {
-		await unlink(tmp).catch(() => {});
-		throw error;
-	}
-}
-var cache_driver_default = defineDriver(
-	/**
-	* @param {{ base?: string }} opts
-	*/
-	(opts) => {
-		const fs = fsDriver({ base: opts.base });
-		const lru = lruCache({ max: 1e3 });
-		const base = resolve(opts.base || ".");
-		return {
-			...fs,
-			async setItem(key, value, opts) {
-				await atomicWrite(join(base, normalizeFsKey(key)), value);
-				await lru.setItem?.(key, value, opts);
-			},
-			async hasItem(key, opts) {
-				return await lru.hasItem(key, opts) || await fs.hasItem(normalizeFsKey(key), opts);
-			},
-			async getItem(key, opts) {
-				return await lru.getItem(key, opts) || await fs.getItem(normalizeFsKey(key), opts);
-			}
-		};
-	}
-);
-
 const storage = createStorage({});
 
 storage.mount('/assets', assets$1);
 
-storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/Users/nikolay/Documents/museum nuxt theme","watchOptions":{"ignored":[null]}}));
-storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/Users/nikolay/Documents/museum nuxt theme/server","watchOptions":{"ignored":[null]}}));
-storage.mount('cache:nuxt:payload', cache_driver_default({"driver":"/Users/nikolay/Documents/museum nuxt theme/node_modules/@nuxt/nitro-server/dist/runtime/utils/cache-driver.mjs","base":"/Users/nikolay/Documents/museum nuxt theme/.nuxt/cache/nuxt/payload"}));
-storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/Users/nikolay/Documents/museum nuxt theme/.nuxt"}));
-storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/Users/nikolay/Documents/museum nuxt theme/.nuxt/cache"}));
-storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"/Users/nikolay/Documents/museum nuxt theme/.data/kv"}));
+storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"C:/Users/rammsstein/Desktop/museum nuxt theme/museum.nuxt.theme","watchOptions":{"ignored":[null]}}));
+storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"C:/Users/rammsstein/Desktop/museum nuxt theme/museum.nuxt.theme/server","watchOptions":{"ignored":[null]}}));
+storage.mount('cache:nuxt:payload', file_58_47_47_47C_58_47Users_47rammsstein_47Desktop_47museum_3720nuxt_3720theme_47museum_46nuxt_46theme_47node_modules_47_64nuxt_47nitro_45server_47dist_47runtime_47utils_47cache_45driver_46mjs({"driver":"file:///C:/Users/rammsstein/Desktop/museum%20nuxt%20theme/museum.nuxt.theme/node_modules/@nuxt/nitro-server/dist/runtime/utils/cache-driver.mjs","base":"C:/Users/rammsstein/Desktop/museum nuxt theme/museum.nuxt.theme/.nuxt/cache/nuxt/payload"}));
+storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"C:/Users/rammsstein/Desktop/museum nuxt theme/museum.nuxt.theme/.nuxt"}));
+storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"C:/Users/rammsstein/Desktop/museum nuxt theme/museum.nuxt.theme/.nuxt/cache"}));
+storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"C:/Users/rammsstein/Desktop/museum nuxt theme/museum.nuxt.theme/.data/kv"}));
 
 function useStorage(base = "") {
   return base ? prefixStorage(storage, base) : storage;
@@ -756,11 +705,6 @@ new Proxy(/* @__PURE__ */ Object.create(null), {
     }
     return void 0;
   }
-});
-
-getContext("nitro-app", {
-  asyncContext: false,
-  AsyncLocalStorage: void 0
 });
 
 function isPathInScope(pathname, base) {
@@ -2088,7 +2032,7 @@ if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
 window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
 `;
 
-const _U7agjG78iOIdRMU6gpO7LYLiXP7RXjjeK23eF5cS0 = (function(nitro) {
+const _tFu77lTq9M6RzBcmTkzUcILxaA6eV84ne8e7MqRUTUY = (function(nitro) {
   nitro.hooks.hook("render:html", (htmlContext) => {
     htmlContext.head.push(`<script>${script}<\/script>`);
   });
@@ -2152,7 +2096,7 @@ const appSpaLoaderAttrs = {"id":"__nuxt-loader"};
 
 const appId = "nuxt-app";
 
-const rootDir = "/Users/nikolay/Documents/museum nuxt theme";
+const rootDir = "C:/Users/rammsstein/Desktop/museum nuxt theme/museum.nuxt.theme";
 
 //#region src/runtime/plugins/dev-server-logs.ts
 const devReducers = {
@@ -2163,7 +2107,7 @@ const devReducers = {
 	URL: (data) => data instanceof URL ? data.toString() : void 0,
 	Symbol: (data) => typeof data === "symbol" ? data.description ?? "" : void 0
 };
-const asyncContext = getContext$1("nuxt-dev", {
+const asyncContext = getContext("nuxt-dev", {
 	asyncContext: true,
 	AsyncLocalStorage
 });
@@ -2229,27 +2173,12 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _U7agjG78iOIdRMU6gpO7LYLiXP7RXjjeK23eF5cS0,
+  _tFu77lTq9M6RzBcmTkzUcILxaA6eV84ne8e7MqRUTUY,
 dev_server_logs_default,
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 
-const assets = {
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"227ec-WDn18fxiHSR1RSWgj93njPeFscs\"",
-    "mtime": "2026-07-27T21:23:24.817Z",
-    "size": 141292,
-    "path": "index.mjs"
-  },
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"7f857-8RqOYawa+EJ6TnSVHxFqeWkLoW8\"",
-    "mtime": "2026-07-27T21:23:24.817Z",
-    "size": 522327,
-    "path": "index.mjs.map"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -2274,7 +2203,7 @@ function getAsset (id) {
 
 const METHODS = /* @__PURE__ */ new Set(["HEAD", "GET"]);
 const EncodingMap = { gzip: ".gz", br: ".br" };
-const _9bNdFj = eventHandler((event) => {
+const _l5I6_E = eventHandler((event) => {
   if (event.method && !METHODS.has(event.method)) {
     return;
   }
@@ -2714,71 +2643,71 @@ async function getIslandContext(event) {
 	};
 }
 
-const _lazy_sN5XM2 = () => Promise.resolve().then(function () { return _id__delete$9; });
-const _lazy_e0wjh3 = () => Promise.resolve().then(function () { return _id__put$9; });
-const _lazy_uKKp8a = () => Promise.resolve().then(function () { return index_get$9; });
-const _lazy_4_CRUU = () => Promise.resolve().then(function () { return index_post$9; });
-const _lazy_KlvTkM = () => Promise.resolve().then(function () { return _id__delete$7; });
-const _lazy_e13brA = () => Promise.resolve().then(function () { return _id__put$7; });
-const _lazy_0mnxTV = () => Promise.resolve().then(function () { return index_post$7; });
-const _lazy_YT9L2B = () => Promise.resolve().then(function () { return _id__delete$5; });
-const _lazy_3cMy4o = () => Promise.resolve().then(function () { return _id__put$5; });
-const _lazy_I6i6vG = () => Promise.resolve().then(function () { return index_get$7; });
-const _lazy_RD9_ou = () => Promise.resolve().then(function () { return index_post$5; });
-const _lazy_p6I86I = () => Promise.resolve().then(function () { return _id__delete$3; });
-const _lazy_Z6Cl6e = () => Promise.resolve().then(function () { return _id__put$3; });
-const _lazy_pfMjAp = () => Promise.resolve().then(function () { return index_get$5; });
-const _lazy_LnpqWo = () => Promise.resolve().then(function () { return index_post$3; });
-const _lazy_ugTnGa = () => Promise.resolve().then(function () { return login_post$1; });
-const _lazy_QhAItq = () => Promise.resolve().then(function () { return logout_post$1; });
-const _lazy_RGaXuO = () => Promise.resolve().then(function () { return me_get$1; });
-const _lazy_DjEatm = () => Promise.resolve().then(function () { return _id__delete$1; });
-const _lazy_HjV4NK = () => Promise.resolve().then(function () { return _id__get$1; });
-const _lazy_8weWj9 = () => Promise.resolve().then(function () { return _id__put$1; });
-const _lazy_1zxCKR = () => Promise.resolve().then(function () { return index_get$3; });
-const _lazy_2bweno = () => Promise.resolve().then(function () { return index_post$1; });
-const _lazy_NTsdEk = () => Promise.resolve().then(function () { return upload_post$1; });
-const _lazy_ddNHEP = () => Promise.resolve().then(function () { return byt_get$1; });
-const _lazy_ouXZZW = () => Promise.resolve().then(function () { return collections_get$1; });
-const _lazy_IwjEyj = () => Promise.resolve().then(function () { return exhibits_get$1; });
-const _lazy_yN4gFK = () => Promise.resolve().then(function () { return _slug__get$1; });
-const _lazy_70hbPl = () => Promise.resolve().then(function () { return index_get$1; });
-const _lazy_WjBKBY = () => Promise.resolve().then(function () { return renderer; });
+const _lazy_k8zxjf = () => Promise.resolve().then(function () { return _id__delete$9; });
+const _lazy_6Av0OE = () => Promise.resolve().then(function () { return _id__put$9; });
+const _lazy_9wdbJL = () => Promise.resolve().then(function () { return index_get$9; });
+const _lazy_GnNdxB = () => Promise.resolve().then(function () { return index_post$9; });
+const _lazy_qkBjsT = () => Promise.resolve().then(function () { return _id__delete$7; });
+const _lazy_iaDqPX = () => Promise.resolve().then(function () { return _id__put$7; });
+const _lazy_3tB9eY = () => Promise.resolve().then(function () { return index_post$7; });
+const _lazy_kVhUgD = () => Promise.resolve().then(function () { return _id__delete$5; });
+const _lazy_ATJPFb = () => Promise.resolve().then(function () { return _id__put$5; });
+const _lazy_cJi0B4 = () => Promise.resolve().then(function () { return index_get$7; });
+const _lazy_83xK_k = () => Promise.resolve().then(function () { return index_post$5; });
+const _lazy_9YaCT5 = () => Promise.resolve().then(function () { return _id__delete$3; });
+const _lazy_y2MAGt = () => Promise.resolve().then(function () { return _id__put$3; });
+const _lazy_eUIZdK = () => Promise.resolve().then(function () { return index_get$5; });
+const _lazy_qsedSB = () => Promise.resolve().then(function () { return index_post$3; });
+const _lazy_2kDxRd = () => Promise.resolve().then(function () { return login_post$1; });
+const _lazy_on_SsY = () => Promise.resolve().then(function () { return logout_post$1; });
+const _lazy_GSTGQK = () => Promise.resolve().then(function () { return me_get$1; });
+const _lazy_LtUpAZ = () => Promise.resolve().then(function () { return _id__delete$1; });
+const _lazy_zVRDpU = () => Promise.resolve().then(function () { return _id__get$1; });
+const _lazy_Yk2pVi = () => Promise.resolve().then(function () { return _id__put$1; });
+const _lazy_Mu8sd9 = () => Promise.resolve().then(function () { return index_get$3; });
+const _lazy_dPK5tl = () => Promise.resolve().then(function () { return index_post$1; });
+const _lazy_nM6Xvi = () => Promise.resolve().then(function () { return upload_post$1; });
+const _lazy_92uctH = () => Promise.resolve().then(function () { return byt_get$1; });
+const _lazy_qZ73sG = () => Promise.resolve().then(function () { return collections_get$1; });
+const _lazy_lhUmkH = () => Promise.resolve().then(function () { return exhibits_get$1; });
+const _lazy_3R3prP = () => Promise.resolve().then(function () { return _slug__get$1; });
+const _lazy_qahXFh = () => Promise.resolve().then(function () { return index_get$1; });
+const _lazy_3h1Cth = () => Promise.resolve().then(function () { return renderer; });
 
 const handlers = [
-  { route: '', handler: _9bNdFj, lazy: false, middleware: true, method: undefined },
-  { route: '/api/admin/byt/categories/:id', handler: _lazy_sN5XM2, lazy: true, middleware: false, method: "delete" },
-  { route: '/api/admin/byt/categories/:id', handler: _lazy_e0wjh3, lazy: true, middleware: false, method: "put" },
-  { route: '/api/admin/byt/categories', handler: _lazy_uKKp8a, lazy: true, middleware: false, method: "get" },
-  { route: '/api/admin/byt/categories', handler: _lazy_4_CRUU, lazy: true, middleware: false, method: "post" },
-  { route: '/api/admin/byt/items/:id', handler: _lazy_KlvTkM, lazy: true, middleware: false, method: "delete" },
-  { route: '/api/admin/byt/items/:id', handler: _lazy_e13brA, lazy: true, middleware: false, method: "put" },
-  { route: '/api/admin/byt/items', handler: _lazy_0mnxTV, lazy: true, middleware: false, method: "post" },
-  { route: '/api/admin/collections/:id', handler: _lazy_YT9L2B, lazy: true, middleware: false, method: "delete" },
-  { route: '/api/admin/collections/:id', handler: _lazy_3cMy4o, lazy: true, middleware: false, method: "put" },
-  { route: '/api/admin/collections', handler: _lazy_I6i6vG, lazy: true, middleware: false, method: "get" },
-  { route: '/api/admin/collections', handler: _lazy_RD9_ou, lazy: true, middleware: false, method: "post" },
-  { route: '/api/admin/exhibits/:id', handler: _lazy_p6I86I, lazy: true, middleware: false, method: "delete" },
-  { route: '/api/admin/exhibits/:id', handler: _lazy_Z6Cl6e, lazy: true, middleware: false, method: "put" },
-  { route: '/api/admin/exhibits', handler: _lazy_pfMjAp, lazy: true, middleware: false, method: "get" },
-  { route: '/api/admin/exhibits', handler: _lazy_LnpqWo, lazy: true, middleware: false, method: "post" },
-  { route: '/api/admin/login', handler: _lazy_ugTnGa, lazy: true, middleware: false, method: "post" },
-  { route: '/api/admin/logout', handler: _lazy_QhAItq, lazy: true, middleware: false, method: "post" },
-  { route: '/api/admin/me', handler: _lazy_RGaXuO, lazy: true, middleware: false, method: "get" },
-  { route: '/api/admin/news/:id', handler: _lazy_DjEatm, lazy: true, middleware: false, method: "delete" },
-  { route: '/api/admin/news/:id', handler: _lazy_HjV4NK, lazy: true, middleware: false, method: "get" },
-  { route: '/api/admin/news/:id', handler: _lazy_8weWj9, lazy: true, middleware: false, method: "put" },
-  { route: '/api/admin/news', handler: _lazy_1zxCKR, lazy: true, middleware: false, method: "get" },
-  { route: '/api/admin/news', handler: _lazy_2bweno, lazy: true, middleware: false, method: "post" },
-  { route: '/api/admin/upload', handler: _lazy_NTsdEk, lazy: true, middleware: false, method: "post" },
-  { route: '/api/byt', handler: _lazy_ddNHEP, lazy: true, middleware: false, method: "get" },
-  { route: '/api/collections', handler: _lazy_ouXZZW, lazy: true, middleware: false, method: "get" },
-  { route: '/api/exhibits', handler: _lazy_IwjEyj, lazy: true, middleware: false, method: "get" },
-  { route: '/api/news/:slug', handler: _lazy_yN4gFK, lazy: true, middleware: false, method: "get" },
-  { route: '/api/news', handler: _lazy_70hbPl, lazy: true, middleware: false, method: "get" },
-  { route: '/__nuxt_error', handler: _lazy_WjBKBY, lazy: true, middleware: false, method: undefined },
+  { route: '', handler: _l5I6_E, lazy: false, middleware: true, method: undefined },
+  { route: '/api/admin/byt/categories/:id', handler: _lazy_k8zxjf, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/admin/byt/categories/:id', handler: _lazy_6Av0OE, lazy: true, middleware: false, method: "put" },
+  { route: '/api/admin/byt/categories', handler: _lazy_9wdbJL, lazy: true, middleware: false, method: "get" },
+  { route: '/api/admin/byt/categories', handler: _lazy_GnNdxB, lazy: true, middleware: false, method: "post" },
+  { route: '/api/admin/byt/items/:id', handler: _lazy_qkBjsT, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/admin/byt/items/:id', handler: _lazy_iaDqPX, lazy: true, middleware: false, method: "put" },
+  { route: '/api/admin/byt/items', handler: _lazy_3tB9eY, lazy: true, middleware: false, method: "post" },
+  { route: '/api/admin/collections/:id', handler: _lazy_kVhUgD, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/admin/collections/:id', handler: _lazy_ATJPFb, lazy: true, middleware: false, method: "put" },
+  { route: '/api/admin/collections', handler: _lazy_cJi0B4, lazy: true, middleware: false, method: "get" },
+  { route: '/api/admin/collections', handler: _lazy_83xK_k, lazy: true, middleware: false, method: "post" },
+  { route: '/api/admin/exhibits/:id', handler: _lazy_9YaCT5, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/admin/exhibits/:id', handler: _lazy_y2MAGt, lazy: true, middleware: false, method: "put" },
+  { route: '/api/admin/exhibits', handler: _lazy_eUIZdK, lazy: true, middleware: false, method: "get" },
+  { route: '/api/admin/exhibits', handler: _lazy_qsedSB, lazy: true, middleware: false, method: "post" },
+  { route: '/api/admin/login', handler: _lazy_2kDxRd, lazy: true, middleware: false, method: "post" },
+  { route: '/api/admin/logout', handler: _lazy_on_SsY, lazy: true, middleware: false, method: "post" },
+  { route: '/api/admin/me', handler: _lazy_GSTGQK, lazy: true, middleware: false, method: "get" },
+  { route: '/api/admin/news/:id', handler: _lazy_LtUpAZ, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/admin/news/:id', handler: _lazy_zVRDpU, lazy: true, middleware: false, method: "get" },
+  { route: '/api/admin/news/:id', handler: _lazy_Yk2pVi, lazy: true, middleware: false, method: "put" },
+  { route: '/api/admin/news', handler: _lazy_Mu8sd9, lazy: true, middleware: false, method: "get" },
+  { route: '/api/admin/news', handler: _lazy_dPK5tl, lazy: true, middleware: false, method: "post" },
+  { route: '/api/admin/upload', handler: _lazy_nM6Xvi, lazy: true, middleware: false, method: "post" },
+  { route: '/api/byt', handler: _lazy_92uctH, lazy: true, middleware: false, method: "get" },
+  { route: '/api/collections', handler: _lazy_qZ73sG, lazy: true, middleware: false, method: "get" },
+  { route: '/api/exhibits', handler: _lazy_lhUmkH, lazy: true, middleware: false, method: "get" },
+  { route: '/api/news/:slug', handler: _lazy_3R3prP, lazy: true, middleware: false, method: "get" },
+  { route: '/api/news', handler: _lazy_qahXFh, lazy: true, middleware: false, method: "get" },
+  { route: '/__nuxt_error', handler: _lazy_3h1Cth, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: handler$1, lazy: false, middleware: false, method: undefined },
-  { route: '/**', handler: _lazy_WjBKBY, lazy: true, middleware: false, method: undefined }
+  { route: '/**', handler: _lazy_3h1Cth, lazy: true, middleware: false, method: undefined }
 ];
 
 function createNitroApp() {
@@ -2999,7 +2928,7 @@ async function runTask(name, {
 }
 
 if (!globalThis.crypto) {
-  globalThis.crypto = crypto$1.webcrypto;
+  globalThis.crypto = nodeCrypto.webcrypto;
 }
 const { NITRO_NO_UNIX_SOCKET, NITRO_DEV_WORKER_ID } = process.env;
 trapUnhandledNodeErrors();
