@@ -134,22 +134,29 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 </script>
 
 <style scoped>
+/*
+  Цвета блока полностью завязаны на переменные темы проекта
+  (см. app/assets/css/main.css) — панель следует за переключением
+  светлая/тёмная тема наравне с остальным сайтом.
+  Фото-планы используют var(--map-img-filter) / var(--map-thumb-filter),
+  которые тоже меняются по теме, чтобы снимки не выглядели мрачными.
+*/
 
 .museum-map{
-  background:#26241d;
-  border:1px solid rgba(255,255,255,.08);
+  background: rgb(var(--color-surface));
+  border: 1px solid var(--color-hline);
   padding:28px;
   position:relative;
   box-shadow:
-      inset 0 0 0 1px rgba(255,255,255,.03),
-      0 25px 60px rgba(0,0,0,.45);
+      inset 0 0 0 1px rgb(var(--color-fg) / 0.04),
+      0 25px 60px rgb(var(--color-bg) / 0.35);
 }
 
 .museum-map::before{
   content:"";
   position:absolute;
   inset:10px;
-  border:1px dashed rgba(255,255,255,.12);
+  border:1px dashed rgb(var(--color-fg) / 0.12);
   pointer-events:none;
 }
 
@@ -161,7 +168,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 
 .mono{
   font-family:"JetBrains Mono";
-  color:#b8b39b;
+  color: rgb(var(--color-fgdim));
   letter-spacing:.2em;
   font-size:12px;
 }
@@ -170,8 +177,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   width:74px;
   height:74px;
   border-radius:50%;
-  border:2px solid #a13328;
-  color:#a13328;
+  border:2px solid rgb(var(--color-rust));
+  color: rgb(var(--color-rust));
   display:flex;
   justify-content:center;
   align-items:center;
@@ -182,15 +189,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 
 .map-frame{
   position:relative;
-  background:#1b1b18;
+  background: rgb(var(--color-bg));
   padding:14px;
-  border:2px solid #4a4538;
+  border:2px solid rgb(var(--color-khaki) / 0.55);
 }
 
 .rivets{
   width:12px;
   height:12px;
-  background:#7d7662;
+  background: rgb(var(--color-khaki));
   border-radius:50%;
   position:absolute;
   box-shadow:
@@ -209,7 +216,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   position:relative;
   cursor:zoom-in;
   overflow:hidden;
-  border:1px solid #3a362b;
+  border:1px solid var(--color-hline);
 }
 
 .viewer-img{
@@ -217,8 +224,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   height:480px;
   object-fit:cover;
   display:block;
-  filter:contrast(1.05);
-  transition:transform .5s ease;
+  filter: var(--map-img-filter);
+  transition:transform .5s ease, filter .3s ease;
 }
 
 .viewer:hover .viewer-img{
@@ -226,6 +233,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 }
 
 .viewer-caption{
+  /* тёмная подложка лежит поверх фотографии, а не страницы — остаётся неизменной в обеих темах */
   position:absolute;
   left:0; bottom:0;
   padding:14px 18px;
@@ -237,16 +245,17 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 }
 
 .plan-tag{
-  color:#a13328;
+  color: rgb(var(--color-rust));
   font-family:"JetBrains Mono";
   font-size:11px;
   letter-spacing:.15em;
-  border:1px solid #a13328;
+  border:1px solid rgb(var(--color-rust));
   padding:2px 8px;
 }
 
 .plan-name{
-  color:#e8e1ce;
+  /* текст поверх тёмного градиента на фото — фиксированный светлый, как на кнопках bg-rust */
+  color: rgb(var(--color-paper));
   font-family:"JetBrains Mono";
   font-size:13px;
   letter-spacing:.05em;
@@ -255,7 +264,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .zoom-hint{
   position:absolute;
   top:14px; right:18px;
-  color:#d6cfbb;
+  color: rgb(var(--color-paperdim));
   font-family:"JetBrains Mono";
   font-size:11px;
   letter-spacing:.1em;
@@ -279,8 +288,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .thumb{
   position:relative;
   padding:0;
-  border:1px solid #3a362b;
-  background:#151310;
+  border:1px solid var(--color-hline);
+  background: rgb(var(--color-bg));
   cursor:pointer;
   overflow:hidden;
   transition:border-color .2s;
@@ -291,14 +300,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   height:74px;
   object-fit:cover;
   display:block;
-  filter:grayscale(.2) brightness(.85);
+  filter: var(--map-thumb-filter);
   transition:filter .2s;
 }
 
 .thumb span{
+  /* подпись поверх фото на тёмной плашке — фиксированный светлый цвет */
   position:absolute;
   left:6px; bottom:6px;
-  color:#d6cfbb;
+  color: rgb(var(--color-paperdim));
   font-family:"JetBrains Mono";
   font-size:10px;
   letter-spacing:.1em;
@@ -306,11 +316,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   padding:2px 6px;
 }
 
-.thumb:hover{ border-color:#7d7662; }
-.thumb:hover img{ filter:grayscale(0) brightness(1); }
+.thumb:hover{ border-color: rgb(var(--color-khaki)); }
+.thumb:hover img{ filter: var(--map-thumb-filter-active); }
 
-.thumb.is-active{ border-color:#a13328; }
-.thumb.is-active img{ filter:grayscale(0) brightness(1); }
+.thumb.is-active{ border-color: rgb(var(--color-rust)); }
+.thumb.is-active img{ filter: var(--map-thumb-filter-active); }
 
 /* ---- footer ---- */
 .footer{
@@ -319,25 +329,26 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   justify-content:space-between;
   align-items:center;
   flex-wrap:wrap;
+  gap:16px;
 }
 
 .info{
   display:flex;
   gap:50px;
-  color:#d6cfbb;
+  color: rgb(var(--color-fgdim));
 }
 
 .info span{
   display:block;
-  color:#8f8b78;
+  color: rgb(var(--color-steel));
   font-size:11px;
   font-family:"JetBrains Mono";
   margin-bottom:4px;
 }
 
 a{
-  color:#e8e1ce;
-  background:#a13328;
+  color: rgb(var(--color-paper));
+  background: rgb(var(--color-rust));
   padding:14px 24px;
   text-decoration:none;
   text-transform:uppercase;
@@ -345,9 +356,11 @@ a{
   transition:.25s;
 }
 
-a:hover{ background:#bb4033; }
+a:hover{ background: rgb(var(--color-rustlight)); }
 
-/* ---- lightbox ---- */
+/* ---- лайтбокс ----
+   Полноэкранный просмотр фото намеренно остаётся тёмным в обеих темах —
+   это отдельный слой поверх страницы (как фотовьюер), а не часть контента сайта. */
 .lightbox{
   position:fixed;
   inset:0;
@@ -365,12 +378,13 @@ a:hover{ background:#bb4033; }
   max-width:min(1100px, 92vw);
   max-height:74vh;
   object-fit:contain;
-  border:2px solid #4a4538;
+  border:2px solid rgb(var(--color-khaki) / 0.7);
   box-shadow:0 20px 60px rgba(0,0,0,.6);
+  filter: var(--map-img-filter);
 }
 
 .lb-caption{
-  color:#e8e1ce;
+  color: rgb(var(--color-paper));
   font-family:"JetBrains Mono";
   font-size:13px;
   letter-spacing:.05em;
@@ -384,13 +398,13 @@ a:hover{ background:#bb4033; }
   top:24px; right:28px;
   background:none;
   border:1px solid rgba(255,255,255,.25);
-  color:#e8e1ce;
+  color: rgb(var(--color-paper));
   font-size:22px;
   line-height:1;
   width:40px; height:40px;
   cursor:pointer;
 }
-.lb-close:hover{ border-color:#a13328; color:#a13328; }
+.lb-close:hover{ border-color: rgb(var(--color-rust)); color: rgb(var(--color-rust)); }
 
 .lb-nav{
   position:absolute;
@@ -398,12 +412,12 @@ a:hover{ background:#bb4033; }
   transform:translateY(-50%);
   background:none;
   border:1px solid rgba(255,255,255,.25);
-  color:#e8e1ce;
+  color: rgb(var(--color-paper));
   font-size:28px;
   width:48px; height:48px;
   cursor:pointer;
 }
-.lb-nav:hover{ border-color:#a13328; color:#a13328; }
+.lb-nav:hover{ border-color: rgb(var(--color-rust)); color: rgb(var(--color-rust)); }
 .lb-prev{ left:24px; }
 .lb-next{ right:24px; }
 
@@ -418,7 +432,7 @@ a:hover{ background:#bb4033; }
   background:rgba(255,255,255,.25);
   cursor:pointer;
 }
-.dot.is-active{ background:#a13328; }
+.dot.is-active{ background: rgb(var(--color-rust)); }
 
 @media (max-width: 640px){
   .thumbs{ grid-template-columns:repeat(2, 1fr); }
