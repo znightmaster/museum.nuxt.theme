@@ -22,13 +22,31 @@
           class="map-guard absolute inset-0 z-[3] flex items-center justify-center bg-bg/10 hover:bg-bg/20 transition-colors cursor-pointer"
           @click="mapActive = true"
       >
-  <span
-      class="font-mono text-[11px] tracking-[0.14em] uppercase text-fg bg-surface/90 border border-rust px-4 py-2.5"
-  >
-    Нажмите, чтобы включить карту
-  </span>
+        <!--
+          Маркер-цель поверх статичного снимка карты — указывает на метку музея,
+          пока карта не активирована. Координаты (left/top) подобраны под текущий
+          вид Яндекс-конструктора; если поменяете масштаб/центр карты в конструкторе,
+          поправьте их. Живёт только внутри map-guard: как только карта становится
+          интерактивной (можно панорамировать/зумить), оверлей исчезает вместе
+          с заглушкой — иначе он бы "уехал" от настоящей метки на карте.
+        -->
+        <span
+            class="map-pin absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-9 h-9 pointer-events-none"
+            aria-hidden="true"
+        >
+          <span class="map-pin__ring absolute inset-0 w-9 h-9 rounded-full border-2 border-rust" />
+          <span class="map-pin__ring map-pin__ring--delay absolute inset-0 w-9 h-9 rounded-full border-2 border-rust" />
+          <span class="map-pin__dot absolute inset-0 m-auto w-2.5 h-2.5 rounded-full bg-rust shadow-[0_0_0_5px_rgb(var(--color-surface)/0.85)]" />
+        </span>
+
+        <span
+            class="absolute left-[75%] top-[1%] font-mono text-[11px] tracking-[0.14em] uppercase text-fg bg-surface/90 border border-rust px-4 py-2.5"
+        >
+          Нажмите, чтобы включить карту
+        </span>
       </button>
     </div>
+
 
     <!-- инфо-карточка поверх карты (на мобильных — под картой, статичным блоком) -->
     <div
@@ -89,7 +107,7 @@ const mapHost = ref(null)
 // чтобы прокрутка страницы колесом мыши над картой не приближала/отдаляла саму карту.
 const mapActive = ref(false)
 const YANDEX_CONSTRUCTOR_SRC =
-  'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A5852070bf1496b96c89052c0a2d1a0235ce5b39d4273cb4c897ae18f9041b569&width=100%25&height=100%25&lang=ru_RU&scroll=true'
+  'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A5852070bf1496b96c89052c0a2d1a0235ce5b39d4273cb4c897ae18f9041b569&amp;width=870&amp;height=548&amp;lang=ru_RU&amp;scroll=true'
 
 onMounted(() => {
   const script = document.createElement('script')
@@ -133,5 +151,32 @@ onMounted(() => {
     transparent 1px,
     transparent 3px
   );
+}
+
+/* маркер-цель: две расходящиеся "радарные" окружности + статичная точка по центру */
+.map-pin__ring {
+  animation: map-pin-pulse 2.4s ease-out infinite;
+}
+
+.map-pin__ring--delay {
+  animation-delay: 1.2s;
+}
+
+@keyframes map-pin-pulse {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-pin__ring {
+    animation: none;
+    opacity: 0.5;
+  }
 }
 </style>
