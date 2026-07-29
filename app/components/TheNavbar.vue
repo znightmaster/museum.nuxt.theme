@@ -167,6 +167,33 @@ onUnmounted(() => {
       </nav>
     </Transition>
   </div>
+
+  <!--
+    Подложка на весь остальной сайт, пока открыто мобильное меню.
+    Лежит вне шапки (сиблинг, не потомок), поэтому не мешает клику по
+    ссылкам/бургеру внутри шапки (у той z-50, у подложки z-40 — шапка
+    всегда рисуется поверх). Клик по любому месту "тела" сайта попадает
+    именно на эту подложку и закрывает меню тем же closeMenu(), что и
+    обычные ссылки — поэтому исчезновение анимируется тем же плавным
+    fade/translate, что и у самой панели, просто отдельным Transition
+    на затемнение фона.
+  -->
+  <Transition
+      enter-active-class="transition-opacity duration-300 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-opacity duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+  >
+    <button
+        v-if="isMenuOpen"
+        type="button"
+        class="md:hidden fixed inset-0 z-40 bg-bg/50 backdrop-blur-[2px] cursor-default"
+        aria-label="Закрыть меню"
+        @click="closeMenu"
+    />
+  </Transition>
 </template>
 
 <style scoped>
