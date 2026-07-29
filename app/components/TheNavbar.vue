@@ -1,6 +1,9 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { navLinks } from '~/utils/museum.js'
+
+const route = useRoute()
 
 const isScrolled = ref(false)
 const isMenuOpen = ref(false)
@@ -13,6 +16,17 @@ function handleScroll() {
     isScrolled.value = window.scrollY > 40
     ticking = false
   })
+}
+
+function handleNavClick(event, to) {
+  closeMenu()
+
+  // если ссылка ведёт туда, где мы уже находимся — роутер никуда не поведёт
+  // и скролл не сработает, поэтому сами плавно скроллим наверх
+  if (route.path === to) {
+    event.preventDefault()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 
 function toggleMenu() {
@@ -44,7 +58,7 @@ onUnmounted(() => {
       <NuxtLink
           to="/"
           class="flex items-center gap-2.5 font-display font-semibold uppercase tracking-wide text-sm"
-          @click="closeMenu"
+          @click="handleNavClick($event, '/')"
       >
         <svg
             viewBox="0 0 71 74"
@@ -141,7 +155,7 @@ onUnmounted(() => {
             class="font-mono text-[13px] uppercase tracking-wider text-fgdim hover:text-rust transition-colors"
             active-class="text-rust"
             exact-active-class="text-rust"
-            @click="closeMenu"
+            @click="handleNavClick($event, link.to)"
         >
           {{ link.label }}
         </NuxtLink>
