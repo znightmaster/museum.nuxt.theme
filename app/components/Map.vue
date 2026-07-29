@@ -23,12 +23,10 @@
           @click="mapActive = true"
       >
         <!--
-          Маркер-цель поверх статичного снимка карты — указывает на метку музея,
-          пока карта не активирована. Координаты (left/top) подобраны под текущий
-          вид Яндекс-конструктора; если поменяете масштаб/центр карты в конструкторе,
-          поправьте их. Живёт только внутри map-guard: как только карта становится
-          интерактивной (можно панорамировать/зумить), оверлей исчезает вместе
-          с заглушкой — иначе он бы "уехал" от настоящей метки на карте.
+          Маркер-цель поверх статичного снимка карты — указывает на музей,
+          пока карта не активирована. Живёт только внутри map-guard: как только
+          карта становится интерактивной (можно панорамировать/зумить), оверлей
+          исчезает вместе с заглушкой.
         -->
         <span
             class="map-pin absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-9 h-9 pointer-events-none"
@@ -39,8 +37,23 @@
           <span class="map-pin__dot absolute inset-0 m-auto w-2.5 h-2.5 rounded-full bg-rust shadow-[0_0_0_5px_rgb(var(--color-surface)/0.85)]" />
         </span>
 
+        <!--
+          Подсказка "Нажмите, чтобы включить карту" — позиция responsive и анимированная
+          через transition на top/left/transform. На мобильных (стек: карточка сверху,
+          карта снизу из-за flex-col-reverse) подсказка ставится по центру у самого
+          верхнего края карты — то есть прямо под рамкой "координаты объекта".
+          От md и выше карточка уходит в абсолютный оверлей поверх карты, и подсказка
+          возвращается в свой обычный угол в правом верхнем углу карты. Так как обе
+          позиции заданы через responsive-классы на одном и том же элементе (без
+          v-if/пересоздания), браузер плавно анимирует переход между ними при
+          пересечении брейкпоинта — например, при ресайзе окна.
+        -->
         <span
-            class="absolute left-[75%] top-[1%] font-mono text-[11px] tracking-[0.14em] uppercase text-fg bg-surface/90 border border-rust px-4 py-2.5"
+            class="map-hint absolute left-1/2 top-3 -translate-x-1/2 translate-y-0
+                   md:left-auto md:right-1 md:top-1 md:translate-x-0
+                   transition-[left,top,transform] duration-500 ease-in-out
+                   whitespace-nowrap max-w-[calc(100%-1.5rem)] text-center
+                   font-mono text-[11px] tracking-[0.14em] uppercase text-fg bg-surface/90 border border-rust px-4 py-2.5"
         >
           Нажмите, чтобы включить карту
         </span>
@@ -50,7 +63,7 @@
 
     <!-- инфо-карточка поверх карты (на мобильных — под картой, статичным блоком) -->
     <div
-      class="info-card relative md:absolute md:top-7 md:left-7 z-[4] w-full md:w-[300px] -mb-px md:mb-0
+        class="info-card relative md:absolute md:top-7 md:left-7 z-[4] w-full md:w-[300px] -mb-px md:mb-0
              px-6 py-7 bg-surface/95 border border-rust shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
     >
       <span class="info-card__tag block font-mono text-[11px] tracking-[0.14em] uppercase text-rust mb-3.5">
@@ -81,11 +94,11 @@
       </dl>
 
       <a
-        class="info-card__link inline-block font-display text-[13px] tracking-wider uppercase text-fg
+          class="info-card__link inline-block font-display text-[13px] tracking-wider uppercase text-fg
                border-b border-rust pb-0.5 no-underline transition-colors hover:text-rust"
-        href="https://yandex.ru/maps/?text=Яровое+пр-т+Мира+12"
-        target="_blank"
-        rel="noopener"
+          href="https://yandex.ru/maps/?text=Яровое+пр-т+Мира+12"
+          target="_blank"
+          rel="noopener"
       >
         Проложить маршрут →
       </a>
@@ -107,7 +120,7 @@ const mapHost = ref(null)
 // чтобы прокрутка страницы колесом мыши над картой не приближала/отдаляла саму карту.
 const mapActive = ref(false)
 const YANDEX_CONSTRUCTOR_SRC =
-  'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A5852070bf1496b96c89052c0a2d1a0235ce5b39d4273cb4c897ae18f9041b569&amp;width=870&amp;height=548&amp;lang=ru_RU&amp;scroll=true'
+    'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A5852070bf1496b96c89052c0a2d1a0235ce5b39d4273cb4c897ae18f9041b569&amp;width=870&amp;height=548&amp;lang=ru_RU&amp;scroll=true'
 
 onMounted(() => {
   const script = document.createElement('script')
@@ -135,21 +148,21 @@ onMounted(() => {
    чтобы карта всегда читалась как «состаренный» топографический снимок */
 .map-tone {
   background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.35) 0%,
-    rgb(var(--color-rust) / 0.08) 45%,
-    rgba(0, 0, 0, 0.55) 100%
+      180deg,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgb(var(--color-rust) / 0.08) 45%,
+      rgba(0, 0, 0, 0.55) 100%
   );
 }
 
 /* лёгкие "сканлайны" под военно-топографическую эстетику */
 .map-scan {
   background-image: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.06) 0px,
-    rgba(0, 0, 0, 0.06) 1px,
-    transparent 1px,
-    transparent 3px
+      0deg,
+      rgba(0, 0, 0, 0.06) 0px,
+      rgba(0, 0, 0, 0.06) 1px,
+      transparent 1px,
+      transparent 3px
   );
 }
 
@@ -177,6 +190,10 @@ onMounted(() => {
   .map-pin__ring {
     animation: none;
     opacity: 0.5;
+  }
+
+  .map-hint {
+    transition: none;
   }
 }
 </style>
