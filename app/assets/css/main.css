@@ -39,8 +39,9 @@
   /* контур чертежей (.gaz69, .bm13) — светло-серый на тёмном фоне */
   --color-outline: 216 216 216; /* #d8d8d8 */
 
-  --map-img-filter: contrast(1.05) saturate(1.08) brightness(1.02);
-  --map-thumb-filter: saturate(0.95) brightness(0.92);
+  /* дуотон карты: обесцвечиваем тайлы Яндекса и красим под khaki/rust,
+     тёмная тема — приглушённая, «состаренная» тональность */
+  --map-img-filter: grayscale(1) sepia(0.35) hue-rotate(-8deg) brightness(0.92) contrast(1.05);  --map-thumb-filter: saturate(0.95) brightness(0.92);
   --map-thumb-filter-active: saturate(1.1) brightness(1.05);
 
 }
@@ -74,8 +75,9 @@
   /* контур чертежей (.gaz69, .bm13) — тёмный на светлой "бумаге" */
   --color-outline: 42 38 30; /* #2a261e */
 
-  --map-img-filter: contrast(1.02) saturate(1.15) brightness(1.12);
-  --map-thumb-filter: saturate(1.05) brightness(1.05);
+  /* дуотон карты для светлой темы: та же логика, но светлее и мягче —
+     тайлы выглядят как выцветшая карта на бумаге, а не тёмная синька */
+  --map-img-filter: grayscale(0.85) sepia(0.15) hue-rotate(-8deg) brightness(1.2) contrast(0.92);  --map-thumb-filter: saturate(1.05) brightness(1.05);
   --map-thumb-filter-active: saturate(1.15) brightness(1.1);
 
 }
