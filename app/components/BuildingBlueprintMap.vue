@@ -14,80 +14,16 @@
       </button>
     </div>
 
-    <!-- Blueprint-план здания. Пропорции 60 x 15 м -> viewBox 800 x 200 -->
+    <!-- Blueprint-план здания: готовое PNG-изображение плана -->
     <div class="blueprint-map__stage">
-      <svg
-        class="blueprint-map__svg"
-        viewBox="0 0 800 200"
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label="Схематичный план здания музея"
-      >
-        <!-- фон прозрачный, только линии -->
-        <rect
-          :x="building.x"
-          :y="building.y"
-          :width="building.w"
-          :height="building.h"
-          class="bp-outline"
-        />
+      <img
+        :src="mapImage"
+        class="blueprint-map__img"
+        alt="Схематичный план здания музея"
+        draggable="false"
+      />
 
-        <!-- разрыв в стене + подпись "вход" в начале здания -->
-        <line
-          :x1="building.x"
-          :y1="building.y + building.h / 2 - 12"
-          :x2="building.x"
-          :y2="building.y + building.h / 2 + 12"
-          class="bp-entrance-gap"
-        />
-        <path
-          :d="`M ${building.x - 14} ${building.y + building.h / 2} L ${building.x + 10} ${building.y + building.h / 2}`"
-          class="bp-entrance-arrow"
-          marker-end="url(#arrow)"
-        />
-        <text
-          :x="building.x - 6"
-          :y="building.y + building.h / 2 - 18"
-          class="bp-label"
-          text-anchor="middle"
-        >
-          вход
-        </text>
-
-        <!-- лестницы: в середине и в конце здания -->
-        <g
-          v-for="stair in stairs"
-          :key="stair.id"
-          :transform="`translate(${stair.cx}, ${stair.cy})`"
-        >
-          <rect x="-14" y="-22" width="28" height="44" class="bp-stair" />
-          <line
-            v-for="i in 6"
-            :key="i"
-            :x1="-14"
-            :x2="14"
-            :y1="-22 + i * 6"
-            :y2="-22 + i * 6"
-            class="bp-stair-step"
-          />
-          <text :y="34" class="bp-label" text-anchor="middle">лестница</text>
-        </g>
-
-        <defs>
-          <marker
-            id="arrow"
-            markerWidth="8"
-            markerHeight="8"
-            refX="6"
-            refY="4"
-            orient="auto"
-          >
-            <path d="M0,0 L8,4 L0,8 Z" class="bp-arrowhead" />
-          </marker>
-        </defs>
-      </svg>
-
-      <!-- Метки поверх SVG, позиционируются в % от внутренней площади здания -->
+      <!-- Метки поверх PNG, позиционируются в % от площади изображения -->
       <div class="blueprint-map__markers">
         <button
           v-for="item in visibleMarkers"
@@ -173,7 +109,10 @@ import { ref, computed } from 'vue'
 // --- пропсы ---------------------------------------------------------------
 // items: единый список меток на всех этажах.
 // type: 'car' (площадка с техникой, просто подпись) | 'exhibit' (стенд, открывает галерею)
-// x, y: положение в % от внутренней площади плана (0-100)
+// x, y: положение в % от площади PNG-плана (0-100), считаются от
+// левого верхнего угла картинки — так же, как раньше считались от
+// внутренней площади здания в SVG.
+// mapImage: путь к готовому PNG-плану (по умолчанию — файл из /public/images).
 const props = defineProps({
   items: {
     type: Array,
@@ -183,16 +122,11 @@ const props = defineProps({
     type: Array,
     default: () => [1, 2, 3],
   },
+  mapImage: {
+    type: String,
+    default: '/museum-map-lightgray.png',
+  },
 })
-
-// --- геометрия здания: 60 x 15 м -> viewBox 800 x 200 ---------------------
-const building = { x: 60, y: 20, w: 680, h: 160 }
-
-// лестницы: в середине и ближе к концу здания
-const stairs = [
-  { id: 'mid', cx: building.x + building.w * 0.5, cy: building.y + building.h / 2 },
-  { id: 'end', cx: building.x + building.w * 0.88, cy: building.y + building.h / 2 },
-]
 
 // --- состояние --------------------------------------------------------------
 const activeFloor = ref(props.floors[0])
@@ -257,40 +191,12 @@ function prevPhoto() {
   position: relative;
   width: 100%;
 }
-.blueprint-map__svg {
+.blueprint-map__img {
   display: block;
   width: 100%;
   height: auto;
-}
-
-.bp-outline {
-  fill: none;
-  stroke: var(--bp-line-strong);
-  stroke-width: 2;
-}
-.bp-entrance-gap {
-  stroke: transparent; /* визуальный разрыв стены, фон прозрачный по умолчанию */
-  stroke-width: 4;
-}
-.bp-entrance-arrow,
-.bp-arrowhead {
-  stroke: var(--bp-line-strong);
-  fill: var(--bp-line-strong);
-  stroke-width: 1.5;
-}
-.bp-stair {
-  fill: none;
-  stroke: var(--bp-line);
-  stroke-width: 1.5;
-}
-.bp-stair-step {
-  stroke: var(--bp-line);
-  stroke-width: 1;
-}
-.bp-label {
-  font-size: 9px;
-  fill: var(--bp-line);
-  font-family: inherit;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .blueprint-map__markers {

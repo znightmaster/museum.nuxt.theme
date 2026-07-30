@@ -31,8 +31,8 @@ const mapItems = [
     id: 'radiola',
     floor: 1,
     type: 'exhibit',
-    x: 40,
-    y: 25,
+    x: 12,
+    y: 36,
     title: 'Радиола',
     subtitle: '34 экземпляра, 1955–1982',
     photos: [
