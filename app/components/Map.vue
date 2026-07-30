@@ -20,7 +20,7 @@
           v-if="!mapActive"
           type="button"
           class="map-guard absolute inset-0 z-[3] flex items-center justify-center bg-bg/10 hover:bg-bg/20 transition-colors cursor-pointer"
-          @click="mapActive = true"
+          @click="activateMap"
       >
         <!--
           Маркер-цель поверх статичного снимка карты — указывает на музей,
@@ -39,19 +39,20 @@
 
         <!--
           Подсказка "Нажмите, чтобы включить карту" — позиция responsive и анимированная
-          через transition на top/left/transform. На мобильных (стек: карточка сверху,
+          через transition на top/right/left/transform. На мобильных (стек: карточка сверху,
           карта снизу из-за flex-col-reverse) подсказка ставится по центру у самого
           верхнего края карты — то есть прямо под рамкой "координаты объекта".
           От md и выше карточка уходит в абсолютный оверлей поверх карты, и подсказка
-          возвращается в свой обычный угол в правом верхнем углу карты. Так как обе
-          позиции заданы через responsive-классы на одном и том же элементе (без
-          v-if/пересоздания), браузер плавно анимирует переход между ними при
-          пересечении брейкпоинта — например, при ресайзе окна.
+          привязывается к правому верхнему углу карты фиксированным отступом (right/top,
+          а не процентом от ширины) — так у неё всегда одинаковый зазор до края и она
+          не может вылезти за рамку карты при сужении контейнера. Так как обе позиции
+          заданы через responsive-классы на одном и том же элементе (без v-if/пересоздания),
+          браузер плавно анимирует переход между ними при пересечении брейкпоинта.
         -->
         <span
             class="map-hint absolute left-1/2 top-3 -translate-x-1/2 translate-y-0
-                   md:left-auto md:right-1 md:top-1 md:translate-x-0
-                   transition-[left,top,transform] duration-500 ease-in-out
+                   md:left-auto md:right-6 md:top-6 md:translate-x-0
+                   transition-[left,right,top,transform] duration-500 ease-in-out
                    whitespace-nowrap max-w-[calc(100%-1.5rem)] text-center
                    font-mono text-[11px] tracking-[0.14em] uppercase text-fg bg-surface/90 border border-rust px-4 py-2.5"
         >
@@ -120,7 +121,20 @@ const mapHost = ref(null)
 // чтобы прокрутка страницы колесом мыши над картой не приближала/отдаляла саму карту.
 const mapActive = ref(false)
 const YANDEX_CONSTRUCTOR_SRC =
-    'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A5852070bf1496b96c89052c0a2d1a0235ce5b39d4273cb4c897ae18f9041b569&amp;width=870&amp;height=548&amp;lang=ru_RU&amp;scroll=true'
+    'https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A5852070bf1496b96c89052c0a2d1a0235ce5b39d4273cb4c897ae18f9041b569&width=100%&height=100%&lang=ru_RU&scroll=true'
+
+function activateMap() {
+  mapActive.value = true
+
+  // Заглушка забирала клик полностью на себя, поэтому настоящий iframe карты
+  // так и не получал браузерный фокус — а зум колесом у Яндекс.Карт включается
+  // именно по фокусу iframe, а не по факту "где-то на странице кликнули".
+  // Ждём nextTick, чтобы Vue успел убрать заглушку и отрисовать iframe без
+  // перекрытия, и отдаём фокус вручную — как будто пользователь кликнул прямо в карту.
+  nextTick(() => {
+    mapHost.value?.querySelector('iframe')?.focus()
+  })
+}
 
 onMounted(() => {
   const script = document.createElement('script')
