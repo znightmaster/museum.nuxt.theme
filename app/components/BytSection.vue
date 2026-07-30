@@ -12,22 +12,6 @@ import BuildingBlueprintMap from '~/components/BuildingBlueprintMap.vue'
 const mapItems = [
   // --- этаж 1 ---
   {
-    id: 'car-1',
-    floor: 1,
-    type: 'car',
-    x: 15,
-    y: 30,
-    title: 'Ретро-автомобили: «Волга», «Победа»',
-  },
-  {
-    id: 'car-2',
-    floor: 1,
-    type: 'car',
-    x: 15,
-    y: 70,
-    title: 'Мотоциклы',
-  },
-  {
     id: 'radiola',
     floor: 1,
     type: 'exhibit',
@@ -45,8 +29,8 @@ const mapItems = [
     id: 'samovar',
     floor: 1,
     type: 'exhibit',
-    x: 60,
-    y: 70,
+    x: 74.5,
+    y: 57.5,
     title: 'Самовар',
     subtitle: '21 экземпляр, 1930–1970-е',
     photos: ['/images/byt/samovar-1.jpg', '/images/byt/samovar-2.jpg'],
