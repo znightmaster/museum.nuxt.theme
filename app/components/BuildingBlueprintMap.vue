@@ -3,12 +3,12 @@
     <!-- Переключатель этажей -->
     <div class="floor-switch">
       <button
-        v-for="floor in floors"
-        :key="floor"
-        class="floor-switch__btn"
-        :class="{ 'is-active': activeFloor === floor }"
-        type="button"
-        @click="activeFloor = floor"
+          v-for="floor in floors"
+          :key="floor"
+          class="floor-switch__btn"
+          :class="{ 'is-active': activeFloor === floor }"
+          type="button"
+          @click="activeFloor = floor"
       >
         {{ floor }} этаж
       </button>
@@ -17,23 +17,23 @@
     <!-- Blueprint-план здания: готовое PNG-изображение плана -->
     <div class="blueprint-map__stage">
       <img
-        :src="mapImage"
-        class="blueprint-map__img"
-        alt="Схематичный план здания музея"
-        draggable="false"
+          :src="resolvedMapImage"
+          class="blueprint-map__img"
+          alt="Схематичный план здания музея"
+          draggable="false"
       />
 
       <!-- Метки поверх PNG, позиционируются в % от площади изображения -->
       <div class="blueprint-map__markers">
         <button
-          v-for="item in visibleMarkers"
-          :key="item.id"
-          class="marker"
-          :class="`marker--${item.type}`"
-          :style="{ left: item.x + '%', top: item.y + '%' }"
-          :title="item.type === 'car' ? item.title : undefined"
-          type="button"
-          @click="item.type === 'exhibit' ? openExhibit(item) : null"
+            v-for="item in visibleMarkers"
+            :key="item.id"
+            class="marker"
+            :class="`marker--${item.type}`"
+            :style="{ left: item.x + '%', top: item.y + '%' }"
+            :title="item.type === 'car' ? item.title : undefined"
+            type="button"
+            @click="item.type === 'exhibit' ? openExhibit(item) : null"
         >
           <span class="marker__dot" />
         </button>
@@ -63,23 +63,23 @@
 
           <div class="gallery-modal__viewer">
             <button
-              v-if="selected.photos.length > 1"
-              class="gallery-modal__nav gallery-modal__nav--prev"
-              type="button"
-              @click="prevPhoto"
+                v-if="selected.photos.length > 1"
+                class="gallery-modal__nav gallery-modal__nav--prev"
+                type="button"
+                @click="prevPhoto"
             >
               ‹
             </button>
             <img
-              :src="selected.photos[activePhoto]"
-              :alt="selected.title"
-              class="gallery-modal__image"
+                :src="selected.photos[activePhoto]"
+                :alt="selected.title"
+                class="gallery-modal__image"
             />
             <button
-              v-if="selected.photos.length > 1"
-              class="gallery-modal__nav gallery-modal__nav--next"
-              type="button"
-              @click="nextPhoto"
+                v-if="selected.photos.length > 1"
+                class="gallery-modal__nav gallery-modal__nav--next"
+                type="button"
+                @click="nextPhoto"
             >
               ›
             </button>
@@ -87,12 +87,12 @@
 
           <div v-if="selected.photos.length > 1" class="gallery-modal__thumbs">
             <button
-              v-for="(photo, i) in selected.photos"
-              :key="i"
-              class="gallery-modal__thumb"
-              :class="{ 'is-active': i === activePhoto }"
-              type="button"
-              @click="activePhoto = i"
+                v-for="(photo, i) in selected.photos"
+                :key="i"
+                class="gallery-modal__thumb"
+                :class="{ 'is-active': i === activePhoto }"
+                type="button"
+                @click="activePhoto = i"
             >
               <img :src="photo" :alt="`${selected.title} ${i + 1}`" />
             </button>
@@ -112,7 +112,8 @@ import { ref, computed } from 'vue'
 // x, y: положение в % от площади PNG-плана (0-100), считаются от
 // левого верхнего угла картинки — так же, как раньше считались от
 // внутренней площади здания в SVG.
-// mapImage: путь к готовому PNG-плану (по умолчанию — файл из /public/images).
+// mapImage: путь к готовому PNG-плану. Если проп не передан явно,
+// картинка подбирается автоматически под тему (см. themedMapImage ниже).
 const props = defineProps({
   items: {
     type: Array,
@@ -124,9 +125,18 @@ const props = defineProps({
   },
   mapImage: {
     type: String,
-    default: '/museum-map-lightgray.png',
+    default: '',
   },
 })
+
+// --- тема -------------------------------------------------------------------
+// museum-map-lightgray.png — для тёмной темы (светло-серый контур),
+// museum-map-black.png — для светлой темы (чёрный контур).
+const { theme } = useTheme()
+const themedMapImage = computed(() =>
+    theme.value === 'light' ? '/museum-map-black.png' : '/museum-map-lightgray.png'
+)
+const resolvedMapImage = computed(() => props.mapImage || themedMapImage.value)
 
 // --- состояние --------------------------------------------------------------
 const activeFloor = ref(props.floors[0])
@@ -134,7 +144,7 @@ const selected = ref(null)
 const activePhoto = ref(0)
 
 const visibleMarkers = computed(() =>
-  props.items.filter((item) => item.floor === activeFloor.value)
+    props.items.filter((item) => item.floor === activeFloor.value)
 )
 
 function openExhibit(item) {
