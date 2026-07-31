@@ -1,7 +1,27 @@
 <script setup>
-import { zalImage } from '~/utils/museum.js'
+import { zalImageVariants } from '~/utils/museum.js'
 
-const { themed, themedImgFallback } = useThemedImage()
+const { theme } = useTheme()
+
+// Чертёж экспоната: у каждого есть светлая (normal) и тёмная (black)
+// версия линий. Карточка-подложка под чертежом инвертирована относительно
+// темы сайта (светлая тема сайта -> тёмная подложка, и наоборот), поэтому
+// и версия чертежа берётся "от противного" — та, что контрастна подложке.
+function exhibitImage(item) {
+  const variants = zalImageVariants(item)
+  if (!variants) return null
+  return theme.value === 'light' ? variants.normal : variants.black
+}
+
+// Если выбранная версия не найдена (404) — пробуем вторую, а не пропадаем совсем.
+function exhibitImageFallback(event, item) {
+  const variants = zalImageVariants(item)
+  if (!variants) return
+  const other = theme.value === 'light' ? variants.black : variants.normal
+  if (event.target.src !== other) {
+    event.target.src = other
+  }
+}
 
 // Экспонаты редактируются через админку и хранятся в Supabase —
 // здесь просто запрашиваем текущий список у сервера.
@@ -60,20 +80,33 @@ const filtered = computed(() => {
         class="bg-[#f0ece0] text-[#2a2620] shadow-[0_10px_24px_rgba(0,0,0,0.35)]"
         :style="{ transform: `rotate(${item.rotate}deg)` }"
       >
-        <!-- чертёж экспоната -->
+        <!-- чертёж экспоната: подложка инвертирована относительно темы сайта -->
         <div
-          v-if="zalImage(item)"
-          class="relative m-3 mb-0 bg-[#181611] h-32 flex items-center justify-center overflow-hidden"
+          v-if="exhibitImage(item)"
+          class="relative m-3 mb-0 h-32 flex items-center justify-center overflow-hidden transition-colors"
+          :class="theme === 'light' ? 'bg-[#181611]' : 'bg-[#f0ece0]'"
         >
-          <span class="absolute top-1.5 left-1.5 w-2 h-2 border-t border-l border-[#55503f]" />
-          <span class="absolute top-1.5 right-1.5 w-2 h-2 border-t border-r border-[#55503f]" />
-          <span class="absolute bottom-1.5 left-1.5 w-2 h-2 border-b border-l border-[#55503f]" />
-          <span class="absolute bottom-1.5 right-1.5 w-2 h-2 border-b border-r border-[#55503f]" />
+          <span
+            class="absolute top-1.5 left-1.5 w-2 h-2 border-t border-l"
+            :class="theme === 'light' ? 'border-[#55503f]' : 'border-[#2a2620]/35'"
+          />
+          <span
+            class="absolute top-1.5 right-1.5 w-2 h-2 border-t border-r"
+            :class="theme === 'light' ? 'border-[#55503f]' : 'border-[#2a2620]/35'"
+          />
+          <span
+            class="absolute bottom-1.5 left-1.5 w-2 h-2 border-b border-l"
+            :class="theme === 'light' ? 'border-[#55503f]' : 'border-[#2a2620]/35'"
+          />
+          <span
+            class="absolute bottom-1.5 right-1.5 w-2 h-2 border-b border-r"
+            :class="theme === 'light' ? 'border-[#55503f]' : 'border-[#2a2620]/35'"
+          />
           <img
-            :src="themed(zalImage(item))"
+            :src="exhibitImage(item)"
             :alt="item.name"
             class="h-20 w-auto object-contain opacity-90"
-            @error="themedImgFallback($event, zalImage(item))"
+            @error="exhibitImageFallback($event, item)"
           />
         </div>
 
