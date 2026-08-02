@@ -1,42 +1,46 @@
 <template>
   <div class="blueprint-map">
-    <!-- Переключатель этажей -->
-    <div class="floor-switch">
+    <!-- Переключатель этажей: тот же стиль, что и фильтр залов на /exhibits -->
+    <div class="flex flex-wrap gap-2.5 mb-6 mt-3">
       <button
           v-for="floor in floors"
           :key="floor"
-          class="floor-switch__btn"
-          :class="{ 'is-active': activeFloor === floor }"
           type="button"
+          class="font-mono text-[12px] uppercase tracking-wider px-4 py-2 border rounded-sm transition-colors"
+          :class="activeFloor === floor
+            ? 'bg-rust border-rust text-paper'
+            : 'border-hline text-fgdim hover:border-rust hover:text-rust'"
           @click="activeFloor = floor"
       >
         {{ floor }} этаж
       </button>
     </div>
 
-    <!-- Blueprint-план здания: готовое PNG-изображение плана -->
-    <div class="blueprint-map__stage">
-      <img
-          :src="resolvedMapImage"
-          class="blueprint-map__img"
-          alt="Схематичный план здания музея"
-          draggable="false"
-      />
+    <!-- Blueprint-план здания: готовое PNG-изображение плана, в лёгкой рамке как остальные карточки сайта -->
+    <div class="blueprint-map__frame">
+      <div class="blueprint-map__stage">
+        <img
+            :src="resolvedMapImage"
+            class="blueprint-map__img"
+            alt="Схематичный план здания музея"
+            draggable="false"
+        />
 
-      <!-- Метки поверх PNG, позиционируются в % от площади изображения -->
-      <div class="blueprint-map__markers">
-        <button
-            v-for="item in visibleMarkers"
-            :key="item.id"
-            class="marker"
-            :class="`marker--${item.type}`"
-            :style="{ left: item.x + '%', top: item.y + '%' }"
-            :title="item.type === 'car' ? item.title : undefined"
-            type="button"
-            @click="item.type === 'exhibit' ? openExhibit(item) : null"
-        >
-          <span class="marker__dot" />
-        </button>
+        <!-- Метки поверх PNG, позиционируются в % от площади изображения -->
+        <div class="blueprint-map__markers">
+          <button
+              v-for="item in visibleMarkers"
+              :key="item.id"
+              class="marker"
+              :class="`marker--${item.type}`"
+              :style="{ left: item.x + '%', top: item.y + '%' }"
+              :title="item.type === 'car' ? item.title : undefined"
+              type="button"
+              @click="item.type === 'exhibit' ? openExhibit(item) : null"
+          >
+            <span class="marker__dot" />
+          </button>
+        </div>
       </div>
     </div>
 
@@ -167,34 +171,26 @@ function prevPhoto() {
 
 <style scoped>
 /*
-  Компонент не задаёт фон и почти не задаёт цвета —
-  подставьте свои CSS-переменные вместо --bp-* ниже,
-  чтобы карта подхватила стилистику сайта.
+  --bp-* завязаны на реальные переменные темы проекта (main.css),
+  поэтому карта автоматически подхватывает khaki/rust и переключается
+  вместе со светлой/тёмной темой.
 */
 .blueprint-map {
-  --bp-line: var(--color-border, currentColor);
-  --bp-line-strong: var(--color-text, currentColor);
-  --bp-accent-car: var(--color-muted, #8a8a8a);
-  --bp-accent-exhibit: var(--color-accent, #b5772e);
+  --bp-line: var(--color-hline);
+  --bp-line-strong: rgb(var(--color-fg));
+  --bp-accent-car: rgb(var(--color-khaki));
+  --bp-accent-exhibit: rgb(var(--color-rust));
   background: transparent;
 }
 
-.floor-switch {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-.floor-switch__btn {
-  padding: 6px 16px;
+/* Лёгкая рамка вокруг плана — как у остальных карточек сайта (border-hline),
+   а не самостоятельный крупный блок. Ширина ограничена, чтобы план не
+   доминировал над остальным контентом раздела. */
+.blueprint-map__frame {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 10px;
   border: 1px solid var(--bp-line);
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-}
-.floor-switch__btn.is-active {
-  border-color: var(--bp-line-strong);
-  font-weight: 600;
 }
 
 .blueprint-map__stage {
@@ -238,6 +234,8 @@ function prevPhoto() {
   display: block;
 }
 .marker--exhibit .marker__dot {
+  width: 20px;   /* например, крупнее */
+  height: 20px;
   border-color: var(--bp-accent-exhibit);
   background: var(--bp-accent-exhibit);
 }
@@ -248,10 +246,14 @@ function prevPhoto() {
 
 .blueprint-map__legend {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   margin-top: 14px;
-  font-size: 13px;
-  color: var(--bp-line);
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgb(var(--color-fgdim));
   align-items: center;
 }
 .blueprint-map__legend .marker__dot {
@@ -281,8 +283,9 @@ function prevPhoto() {
   padding: 16px;
 }
 .gallery-modal {
-  background: var(--color-surface, #fff);
-  color: var(--color-text, #111);
+  background: rgb(var(--color-surface));
+  color: rgb(var(--color-fg));
+  border: 1px solid var(--color-hline);
   max-width: 640px;
   width: 100%;
   padding: 20px;
@@ -300,7 +303,7 @@ function prevPhoto() {
 }
 .gallery-modal__subtitle {
   font-size: 13px;
-  color: var(--color-muted, #777);
+  color: rgb(var(--color-fgdim));
   margin: 4px 0 0;
 }
 .gallery-modal__close {
@@ -316,7 +319,7 @@ function prevPhoto() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-surface-alt, #f3f3f3);
+  background: rgb(var(--color-bg));
   min-height: 280px;
 }
 .gallery-modal__image {
@@ -355,7 +358,7 @@ function prevPhoto() {
   flex: 0 0 auto;
 }
 .gallery-modal__thumb.is-active {
-  border-color: var(--bp-accent-exhibit, #b5772e);
+  border-color: rgb(var(--color-rust));
 }
 .gallery-modal__thumb img {
   width: 64px;

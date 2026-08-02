@@ -1,25 +1,21 @@
 <script setup>
 import { zalImageVariants } from '~/utils/museum.js'
 
-const { theme } = useTheme()
 
 // Чертёж экспоната: у каждого есть светлая (normal) и тёмная (black)
 // версия линий. Карточка-подложка под чертежом инвертирована относительно
 // темы сайта (светлая тема сайта -> тёмная подложка, и наоборот), поэтому
 // и версия чертежа берётся "от противного" — та, что контрастна подложке.
 function exhibitImage(item) {
-  const variants = zalImageVariants(item)
-  if (!variants) return null
-  return theme.value === 'light' ? variants.normal : variants.black
+  return zalImageVariants(item)?.normal || null
 }
 
 // Если выбранная версия не найдена (404) — пробуем вторую, а не пропадаем совсем.
 function exhibitImageFallback(event, item) {
   const variants = zalImageVariants(item)
   if (!variants) return
-  const other = theme.value === 'light' ? variants.black : variants.normal
-  if (event.target.src !== other) {
-    event.target.src = other
+  if (event.target.src !== variants.black) {
+    event.target.src = variants.black
   }
 }
 
@@ -47,7 +43,7 @@ const filtered = computed(() => {
 <template>
   <div>
     <!-- фильтр по залам -->
-    <div class="flex flex-wrap gap-2.5 mb-10">
+    <div class="flex flex-wrap gap-2.5 mb-10 mt-3">
       <button
         type="button"
         class="font-mono text-[12px] uppercase tracking-wider px-4 py-2 border transition-colors"
@@ -82,31 +78,18 @@ const filtered = computed(() => {
       >
         <!-- чертёж экспоната: подложка инвертирована относительно темы сайта -->
         <div
-          v-if="exhibitImage(item)"
-          class="relative m-3 mb-0 h-32 flex items-center justify-center overflow-hidden transition-colors"
-          :class="theme === 'light' ? 'bg-[#181611]' : 'bg-[#f0ece0]'"
+            v-if="exhibitImage(item)"
+            class="relative m-3 mb-0 bg-[#181611] h-32 flex items-center justify-center overflow-hidden"
         >
-          <span
-            class="absolute top-1.5 left-1.5 w-2 h-2 border-t border-l"
-            :class="theme === 'light' ? 'border-[#55503f]' : 'border-[#2a2620]/35'"
-          />
-          <span
-            class="absolute top-1.5 right-1.5 w-2 h-2 border-t border-r"
-            :class="theme === 'light' ? 'border-[#55503f]' : 'border-[#2a2620]/35'"
-          />
-          <span
-            class="absolute bottom-1.5 left-1.5 w-2 h-2 border-b border-l"
-            :class="theme === 'light' ? 'border-[#55503f]' : 'border-[#2a2620]/35'"
-          />
-          <span
-            class="absolute bottom-1.5 right-1.5 w-2 h-2 border-b border-r"
-            :class="theme === 'light' ? 'border-[#55503f]' : 'border-[#2a2620]/35'"
-          />
+          <span class="absolute top-1.5 left-1.5 w-2 h-2 border-t border-l border-[#55503f]" />
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 border-t border-r border-[#55503f]" />
+          <span class="absolute bottom-1.5 left-1.5 w-2 h-2 border-b border-l border-[#55503f]" />
+          <span class="absolute bottom-1.5 right-1.5 w-2 h-2 border-b border-r border-[#55503f]" />
           <img
-            :src="exhibitImage(item)"
-            :alt="item.name"
-            class="h-20 w-auto object-contain opacity-90"
-            @error="exhibitImageFallback($event, item)"
+              :src="exhibitImage(item)"
+              :alt="item.name"
+              class="h-20 w-auto object-contain opacity-90"
+              @error="exhibitImageFallback($event, item)"
           />
         </div>
 
