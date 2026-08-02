@@ -21,9 +21,6 @@ const { themed, themedImgFallback } = useThemedImage()
         <div class="font-mono text-[11.5px] text-rust uppercase tracking-wider mb-2.5">Билеты</div>
         <div class="text-[15.5px]">
           Взрослый — 500 ₽<br />Детский — 400 ₽
-          <small class="block text-fgdim text-[13px] mt-1">
-            Дети до 7 лет — бесплатно. Экскурсия с гидом — +150 ₽ к билету.
-          </small>
         </div>
       </div>
 

@@ -32,7 +32,7 @@ const filteredNews = computed(() => {
   <section class="pb-24">
     <div class="max-w-[1180px] mx-auto px-8">
       <!-- фильтр по категориям -->
-      <div class="flex flex-wrap gap-2.5 mb-12">
+      <div class="flex flex-wrap gap-2.5 mb-12 mt-3">
         <button
           v-for="f in filters"
           :key="f.key"
@@ -42,7 +42,7 @@ const filteredNews = computed(() => {
             'font-mono text-[12px] uppercase tracking-wider px-4 py-2.5 border transition-colors',
             activeCategory === f.key
               ? 'bg-rust border-rust text-paper'
-              : 'border-hline text-fgdim hover:text-fg hover:border-fgdim',
+              : 'border-hline text-fgdim hover:border-rust hover:text-rust',
           ]"
         >
           {{ f.label }}

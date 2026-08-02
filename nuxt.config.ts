@@ -25,7 +25,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'ru',
       },
-      title: 'Музей советской техники — Яровое',
+      title: 'Музей ретро техники — Яровое',
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         {

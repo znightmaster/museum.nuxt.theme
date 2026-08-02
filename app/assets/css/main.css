@@ -70,7 +70,7 @@
 
   --blueprint-line-1: rgba(33, 29, 22, 0.05);
   --blueprint-line-2: rgba(33, 29, 22, 0.10);
-  --hero-fade-color: #efe4cd;
+  --hero-fade-color: rgba(230, 215, 172, 0.45);
 
   /* контур чертежей (.gaz69, .bm13) — тёмный на светлой "бумаге" */
   --color-outline: 42 38 30; /* #2a261e */
