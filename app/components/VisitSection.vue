@@ -10,10 +10,12 @@ const { themed, themedImgFallback } = useThemedImage()
       <div class="border-t border-hline pt-5 mb-6.5">
         <div class="font-mono text-[11.5px] text-rust uppercase tracking-wider mb-2.5">Часы работы</div>
         <table class="w-full border-collapse text-[14.5px]">
+          <tbody>
           <tr v-for="row in hours" :key="row.day" class="border-t border-hline">
             <td class="py-2.5 text-fgdim font-mono text-[12.5px]">{{ row.day }}</td>
             <td class="py-2.5 text-right">{{ row.time }}</td>
           </tr>
+          </tbody>
         </table>
       </div>
 
