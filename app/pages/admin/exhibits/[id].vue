@@ -6,7 +6,7 @@ const isNew = computed(() => route.params.id === 'new')
 
 const form = reactive({
   num: '', name: '', year: '', rotate: 0, stamp: '', zal: '', note: '', image: '', sort_order: 0,
-  specs: [],
+  specs: [], photos: [], legend: '', history: '',
 })
 
 const loading = ref(!isNew.value)
@@ -20,7 +20,12 @@ if (!isNew.value) {
   const { data: exhibits } = await useFetch('/api/admin/exhibits', { default: () => [] })
   const found = exhibits.value.find((e) => e.id === route.params.id)
   if (found) {
-    Object.assign(form, found, { specs: (found.specs || []).map((s) => ({ ...s })) })
+    Object.assign(form, found, {
+      specs: (found.specs || []).map((s) => ({ ...s })),
+      photos: [...(found.photos || [])],
+      legend: found.legend || '',
+      history: found.history || '',
+    })
   } else {
     error.value = 'Экспонат не найден'
   }
@@ -34,11 +39,22 @@ function removeSpec(i) {
   form.specs.splice(i, 1)
 }
 
+function addPhoto() {
+  form.photos.push('')
+}
+function removePhoto(i) {
+  form.photos.splice(i, 1)
+}
+
 async function save() {
   saving.value = true
   error.value = ''
   try {
-    const payload = { ...form, specs: form.specs.filter((s) => s.k || s.v) }
+    const payload = {
+      ...form,
+      specs: form.specs.filter((s) => s.k || s.v),
+      photos: form.photos.filter((p) => p && p.trim()),
+    }
     if (isNew.value) {
       await $fetch('/api/admin/exhibits', { method: 'POST', body: payload })
     } else {
@@ -113,6 +129,32 @@ async function save() {
       <div>
         <label class="block font-mono text-[11px] uppercase tracking-wider text-fgdim mb-2">Заметка (курсивом внизу карточки)</label>
         <textarea v-model="form.note" rows="3" class="w-full bg-surface border border-hline px-3 py-2 text-fg focus:outline-none focus:border-fgdim"></textarea>
+      </div>
+
+      <div class="border-t border-hline pt-6">
+        <p class="font-mono text-[11px] uppercase tracking-wider text-fgdim mb-4">Карточка при клике — открывается мини-окно</p>
+
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <label class="block font-mono text-[11px] uppercase tracking-wider text-fgdim">Фото для галереи в окне (обложка карточки не меняется)</label>
+            <button type="button" @click="addPhoto" class="font-mono text-[11px] uppercase tracking-wider text-fgdim hover:text-fg">+ фото</button>
+          </div>
+          <div v-for="(photo, i) in form.photos" :key="i" class="flex gap-2 mb-2 items-start">
+            <admin-image-uploader v-model="form.photos[i]" label="" class="flex-1" />
+            <button type="button" @click="removePhoto(i)" class="px-3 py-2 text-fgdim hover:text-rust">✕</button>
+          </div>
+          <p v-if="!form.photos.length" class="text-fgdim text-xs">Фото не добавлены — в окне будет показана только обложка.</p>
+        </div>
+
+        <div class="mb-6">
+          <label class="block font-mono text-[11px] uppercase tracking-wider text-fgdim mb-2">Легенда</label>
+          <textarea v-model="form.legend" rows="4" placeholder="Короткая история/байка об экспонате, как её рассказывают экскурсоводы…" class="w-full bg-surface border border-hline px-3 py-2 text-fg focus:outline-none focus:border-fgdim"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-mono text-[11px] uppercase tracking-wider text-fgdim mb-2">История</label>
+          <textarea v-model="form.history" rows="4" placeholder="Факты: где выпускался, как попал в музей, реставрация…" class="w-full bg-surface border border-hline px-3 py-2 text-fg focus:outline-none focus:border-fgdim"></textarea>
+        </div>
       </div>
 
       <div>

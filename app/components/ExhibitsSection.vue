@@ -38,6 +38,15 @@ const filtered = computed(() => {
   if (activeZal.value === 'Все') return exhibits.value
   return exhibits.value.filter((item) => item.zal === activeZal.value)
 })
+
+// --- мини-окно карточки: фото + "легенда"/"история" ---
+const selectedExhibit = ref(null)
+function openExhibit(item) {
+  selectedExhibit.value = item
+}
+function closeExhibit() {
+  selectedExhibit.value = null
+}
 </script>
 
 <template>
@@ -73,8 +82,14 @@ const filtered = computed(() => {
       <article
         v-for="item in filtered"
         :key="item.id"
-        class="bg-[#f0ece0] text-[#2a2620] shadow-[0_10px_24px_rgba(0,0,0,0.35)]"
+        class="bg-[#f0ece0] text-[#2a2620] shadow-[0_10px_24px_rgba(0,0,0,0.35)] cursor-pointer transition-shadow hover:shadow-[0_16px_34px_rgba(0,0,0,0.45)] focus:outline-none focus-visible:ring-2 focus-visible:ring-rust"
         :style="{ transform: `rotate(${item.rotate}deg)` }"
+        role="button"
+        tabindex="0"
+        :aria-label="`Открыть карточку: ${item.name}`"
+        @click="openExhibit(item)"
+        @keydown.enter="openExhibit(item)"
+        @keydown.space.prevent="openExhibit(item)"
       >
         <!-- чертёж экспоната: подложка инвертирована относительно темы сайта -->
         <div
@@ -132,5 +147,7 @@ const filtered = computed(() => {
     <p v-if="filtered.length === 0" class="text-fgdim text-center py-16">
       В этом зале пока нет карточек.
     </p>
+
+    <ExhibitModal :item="selectedExhibit" @close="closeExhibit" />
   </div>
 </template>

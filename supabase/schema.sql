@@ -21,10 +21,19 @@ create table if not exists exhibits (
   specs jsonb not null default '[]',-- [{ k: "Двигатель", v: "2.1 л, 52 л.с." }, ...]
   note text not null default '',
   image text,                       -- URL картинки (из Supabase Storage) или NULL —
-                                     -- тогда используется общая заглушка зала (zalImages)
+                                     -- тогда используется общая заглушка зала (zalImages).
+                                     -- Это ОБЛОЖКА карточки — не меняется при открытии модалки.
+  photos jsonb not null default '[]', -- ["url1", "url2", ...] — фото для галереи в модальном окне
+  legend text not null default '',    -- подраздел "Легенда" в модалке (печатается по клику)
+  history text not null default '',   -- подраздел "История" в модалке (печатается по клику)
   sort_order int not null default 0,
   created_at timestamptz not null default now()
 );
+
+-- Миграция для уже существующей базы (если таблица exhibits уже создана раньше):
+-- alter table exhibits add column if not exists photos jsonb not null default '[]';
+-- alter table exhibits add column if not exists legend text not null default '';
+-- alter table exhibits add column if not exists history text not null default '';
 
 -- ===== Коллекции/разделы на главной (CollectionsSection) =====
 create table if not exists collections (

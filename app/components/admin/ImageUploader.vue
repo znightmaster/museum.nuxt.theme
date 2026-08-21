@@ -37,7 +37,7 @@ function clear() {
 
 <template>
   <div>
-    <div class="font-mono text-[11px] uppercase tracking-wider text-fgdim mb-2">{{ label }}</div>
+    <div v-if="label" class="font-mono text-[11px] uppercase tracking-wider text-fgdim mb-2">{{ label }}</div>
 
     <div class="flex items-start gap-4">
       <div

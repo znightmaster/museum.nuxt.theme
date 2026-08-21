@@ -13,6 +13,9 @@ export interface ExhibitInput {
   specs?: ExhibitSpec[]
   note?: string
   image?: string | null
+  photos?: string[]
+  legend?: string
+  history?: string
   sort_order?: number
 }
 
